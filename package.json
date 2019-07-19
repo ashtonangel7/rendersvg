@@ -1,0 +1,18 @@
+{
+  "name": "ball",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run": "lws --stack lws-static lws-index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lws": "^2.0.3"
+  },
+  "devDependencies": {
+    "lws-index": "^1.0.5",
+    "lws-static": "^1.1.3"
+  }
+}
