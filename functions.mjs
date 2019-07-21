@@ -12,7 +12,7 @@ const circle = cx => cy => r => stroke => fill => {
     return element;
 }
 
-const rectangle = height => width => x => y => stroke => fill => {
+const rectangle = height => width => x => y => stroke => fill => id => {
     const element = createElement("rect");
     setAttribute(element)("height")(height);
     setAttribute(element)("width")(width);
@@ -20,6 +20,7 @@ const rectangle = height => width => x => y => stroke => fill => {
     setAttribute(element)("fill")(fill);
     setAttribute(element)("x")(x);
     setAttribute(element)("y")(y);
+    setAttribute(element)("id")(id);
     return element;
 }
 
@@ -34,13 +35,21 @@ const moveBall = element => vector => {
    return element; 
 }
 
+const moveRectangle = element => vector => {
+    setAttribute(element)("x")(vector.x);
+    setAttribute(element)("y")(vector.y);
+    return element; 
+}
+
 class Vector2 {
     x;
     y;
+    id;
 
-    constructor(x,y) {
+    constructor(x,y,id) {
         this.x = x;
         this.y = y;
+        this.id = id;
     }
 
     add(vector) {
@@ -71,5 +80,6 @@ export const functions = {
     circle,
     rectangle,
     moveBall,
+    moveRectangle,
     Vector2
 };
