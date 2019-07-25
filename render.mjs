@@ -4,23 +4,24 @@ const canvas = document.getElementById("canvas");
 const addRectangle = document.getElementById("addRectangle");
 
 const addRectangleFn = () => {
-    const x = Math.floor((Math.random() * canvas.clientWidth) + 1);
-    const y = Math.floor((Math.random() * canvas.clientHeight) + 1);
     const newId = vectorStore.length;
-    vectorStore.push(new functions.Vector2(x, y, newId));
-    const rectangle = functions.rectangle(data.rectangleHeight)(data.rectangleWidth)(x)(y)("black")("blue")(newId);
+    vectorStore.push(new functions.Vector2(0, 0, newId));
+    const rectangle = functions.rectangle(data.rectangleHeight, data.rectangleWidth, 0, 0, "black", "blue", newId);
     canvas.appendChild(rectangle);
 }
 
 addRectangle.onclick = addRectangleFn;
 
 const onMouseDownFn = (event) => {
+    const element = event.path[0];
+    if (element.nodeName !== "rect") return;
     data.dragRect = event.path[0];
+    data.dragRectId = data.dragRect.id;
     canvas.onmousemove = onMouseMoveFn;
 }
 
 const onMouseMoveFn = (event) => {
-    const vectorStoreItem = vectorStore.filter(o => o.id == data.dragRect.id);
+    const vectorStoreItem = vectorStore.filter(o => o.id == data.dragRectId);
     const moveVector = new functions.Vector2(event.clientX, event.clientY);
     functions.moveRectangle(data.dragRect)(moveVector);
     vectorStoreItem[0].x = moveVector.x;
@@ -29,6 +30,7 @@ const onMouseMoveFn = (event) => {
 
 const onMouseUpFn = () => {
     data.dragRect = null;
+    data.dragRectId = null;
     canvas.onmousemove = null;
 }
 
@@ -43,24 +45,20 @@ const data = {
     yDirection: true,
     canvasWidth: canvas.clientWidth,
     canvasHeight: canvas.clientHeight,
-    circleVector: new functions.Vector2(100, 200),
+    circleVector: new functions.Vector2(0, 0),
     circleRadius: 10,
     rectangleHeight: 20,
     rectangleWidth: 40
 };
 
-const circle = functions.circle(data.circleVector.x)(data.circleVector.y)(data.circleRadius)("black")("red");
+const circle = functions.circle(data.circleVector.x, data.circleVector.y, data.circleRadius, "black", "red");
 canvas.appendChild(circle);
 
-let vectorId = vectorStore.length;
-vectorStore.push(new functions.Vector2(25, 45, vectorId));
-const rectangle = functions.rectangle(data.rectangleHeight)(data.rectangleWidth)(vectorStore[0].x)(vectorStore[0].y)("black")("blue")(vectorId);
+const vectorId = vectorStore.length;
+vectorStore.push(new functions.Vector2(0, 0, vectorId));
+const rectangle = functions.rectangle(data.rectangleHeight, data.rectangleWidth,
+    vectorStore[0].x, vectorStore[0].y, "black", "blue", vectorId);
 canvas.appendChild(rectangle);
-
-vectorId = vectorStore.length;
-vectorStore.push(new functions.Vector2(200, 250, vectorId));
-const rectangle2 = functions.rectangle(data.rectangleHeight)(data.rectangleWidth)(vectorStore[1].x)(vectorStore[1].y)("black")("blue")(vectorId);
-canvas.appendChild(rectangle2);
 
 const checkCollisions = () => {
     if (data.circleVector.x >= data.canvasWidth - data.circleRadius)
