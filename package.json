@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lws": "^2.0.3"
+    "lws": "^4.1.2"
   },
   "devDependencies": {
     "lws-index": "^1.0.5",
